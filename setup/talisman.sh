@@ -1,4 +1,4 @@
-﻿#!/bin/sh
+﻿#!/bin/bash
 echo "Copies Talisman pre-commit hook to .git folder"
 file='.git/hooks/pre-commit'
 
