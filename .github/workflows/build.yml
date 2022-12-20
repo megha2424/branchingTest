@@ -13,9 +13,7 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: ${{ matrix.dotnet-version }}
-      - name: move to root folder
-        run: cd ${{GITHUB_REPOSITORY}}
       - name: install dependencies
-        run: dotnet restore  
+        run: dotnet restore {{cookiecutter.ProjectName}}PluginBase/{{cookiecutter.ProjectName}}PluginBase.csproj
       - name: Build
-        run: dotnet build --configuration Release --no-restore
+        run: dotnet build {{cookiecutter.ProjectName}}PluginBase/{{cookiecutter.ProjectName}}PluginBase.csproj --configuration Release --no-restore
