@@ -1,4 +1,5 @@
 {
     "template":"Plugin",
-    "ProjectName":"Card"
+    "ProjectName":"Card",
+    "Secret": "1234"
 }
