@@ -2,13 +2,13 @@ import json
 
 replace_text =""
 
-f = open('cookiecutter.json')
+f = open('../../cookiecutter.json')
 
 data = json.load(f)
 
 replace_text=data["ProjectName"].encode('utf-8')
 
-print (replace_text)
+print ("rep text " + replace_text)
 
 search_text = "${{cookiecutter.ProjectName}}"
 
