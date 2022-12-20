@@ -6,7 +6,7 @@ f = open('../../cookiecutter.json')
 
 data = json.load(f)
 
-replace_text = data["ProjectName"].decode('utf-8')
+replace_text = data["ProjectName"].encode('utf-8')
 
 print (replace_text)
 
