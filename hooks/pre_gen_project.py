@@ -10,7 +10,7 @@ replace_text = data["ProjectName"].encode('utf-8')
 
 print (replace_text.decode('utf-8'))
 
-search_text = "${{cookiecutter.ProjectName}}"
+search_text = "project_working_directory"
 
 print (search_text)
 

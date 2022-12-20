@@ -9,7 +9,7 @@ jobs:
         dotnet-version: [ '6.0']
     defaults:
       run:
-        working-directory: ${{cookiecutter.ProjectName}}
+        working-directory: project_working_directory
     steps:
       - uses: actions/checkout@v3
       - name: Setup .NET Core SDK ${{ matrix.dotnet-version }}
