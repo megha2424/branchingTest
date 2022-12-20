@@ -12,6 +12,8 @@ print (replace_text)
 
 search_text = "${{cookiecutter.ProjectName}}"
 
+print (search_text)
+
 with open(r'../../.github/workflows/build.yml', 'r') as file:
 
     data = file.read()
