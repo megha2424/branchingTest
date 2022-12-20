@@ -63,7 +63,6 @@ jobs:
           ! -name 'setup' \
           ! -name '.gitignore' \
           ! -name '.talismanrc' \
-          ! -name '.github' \
           ! -name 'sonar-project' \
           ! -exec rm -rf {} +
 
