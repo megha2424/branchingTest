@@ -60,6 +60,7 @@ jobs:
           ! -name '.git' \
           ! -name 'cookiecutter-temp' \
           ! -name '.' \
+          ! -name 'setup' \
           ! -exec rm -rf {} +
 
       - name: Move files to root
