@@ -61,6 +61,9 @@ jobs:
           ! -name 'cookiecutter-temp' \
           ! -name '.' \
           ! -name 'setup' \
+          ! -name '.gitignore' \
+          ! -name '.talismanrc' \
+          ! -name 'sonar-project' \
           ! -exec rm -rf {} +
 
       - name: Move files to root
