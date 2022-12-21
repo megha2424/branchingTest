@@ -11,7 +11,7 @@ replace_text = "{{cookiecutter.ProjectName}}" #data["ProjectName"].encode('utf-8
 #print (replace_text.decode('utf-8'))
 print (replace_text)
 
-search_text = "project_working_directory"
+search_text = "[[project_working_directory]]"
 
 print (search_text)
 

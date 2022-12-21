@@ -9,7 +9,7 @@ jobs:
         dotnet-version: [ '6.0']
     defaults:
       run:
-        working-directory: project_working_directory
+        working-directory: [[project_working_directory]]PluginBase
     steps:
       - uses: actions/checkout@v3
       - name: Setup .NET Core SDK ${{ matrix.dotnet-version }}
