@@ -1,5 +1,5 @@
 
-replace_text = "{{cookiecutter.ProjectName}}" 
+replace_text = "{{cookiecutter.Namespace}}.{{cookiecutter.ProjectName}}" 
 
 print (replace_text)
 

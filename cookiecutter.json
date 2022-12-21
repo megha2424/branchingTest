@@ -1,3 +1,4 @@
 {
-    "ProjectName" : "Space.Service.Plugin.[[Write project name here]]"
+    "ProjectName" : "[[Write project name here]]",
+    "Namespace" : "Space.Service.Plugin"
 }

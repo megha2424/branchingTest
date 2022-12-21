@@ -1,4 +1,4 @@
-﻿namespace {{cookiecutter.ProjectName}}PluginBase;
+﻿namespace {{cookiecutter.Namespace}}.{{cookiecutter.ProjectName}}PluginBase;
 
 public interface I{{cookiecutter.ProjectName}}Plugin
 {
