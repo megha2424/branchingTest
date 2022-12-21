@@ -1,5 +1,5 @@
 # must be unique in a given SonarQube instance
-sonar.projectKey=Space.Service.{{cookieCutter.template}}.{{cookieCutter.ProjectName}}PluginBase
+sonar.projectKey={{cookieCutter.Namespace}}.{{cookieCutter.ProjectName}}PluginBase
 
 # --- optional properties ---
 
