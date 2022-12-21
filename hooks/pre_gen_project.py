@@ -1,14 +1,15 @@
 import json
 
-replace_text =""
+# replace_text =""
 
-f = open('../../cookiecutter.json')
+# f = open('../../cookiecutter.json')
 
-data = json.load(f)
+# data = json.load(f)
 
-replace_text = data["ProjectName"].encode('utf-8')
+replace_text = "{{cookiecutter.ProjectName}}" #data["ProjectName"].encode('utf-8')
 
-print (replace_text.decode('utf-8'))
+#print (replace_text.decode('utf-8'))
+print (replace_text)
 
 search_text = "project_working_directory"
 
