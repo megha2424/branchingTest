@@ -19,7 +19,8 @@ with open(r'../../.github/workflows/build.yml', 'r') as file:
 
     data = file.read()
     print(data)
-    data = data.replace(search_text, replace_text.decode('utf-8'))
+    #data = data.replace(search_text, replace_text.decode('utf-8'))
+    data = data.replace(search_text, replace_text)
     print(data)
 
 with open(r'../../.github/workflows/build.yml', 'w') as file:
