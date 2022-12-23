@@ -3,12 +3,14 @@ on:
   push:
     paths:
       - cookiecutter.json
+    branches:
+      - 'master'
 jobs:
   setup:
     name: Reinitialize repository
     runs-on: ubuntu-latest
     env:
-      REPO_SETUP_TOKEN: ${{ secrets.REPO_SETUP_TOKEN }}
+      REPO_SETUP_TOKEN: ${{ secrets.COOKIE_CUTTER_TOKEN }}
     steps:
       - name: Do not run scaffolding on template repository
         shell: bash
@@ -20,7 +22,7 @@ jobs:
         # is a template repository or not.
         run: |
           curl --silent -X GET \
-            -H "Authorization: token ${{ secrets.WORKFLOW_TOKEN }}" \
+            -H "Authorization: token ${{ secrets.COOKIE_CUTTER_TOKEN }}" \
             -H "Accept: application/vnd.github.baptiste-preview+json" \
             https://api.github.com/repos/$GITHUB_REPOSITORY \
             | jq --exit-status '.is_template == false';
@@ -33,7 +35,7 @@ jobs:
           #
           # Generate a new personal access token with the workflow `scope` does the trick.
           # Checkout my blog post https://stefanbuck.com/blog for alternative options
-          token: ${{ env.REPO_SETUP_TOKEN || secrets.WORKFLOW_TOKEN }}
+          token: ${{ env.REPO_SETUP_TOKEN || secrets.COOKIE_CUTTER_TOKEN }}
 
       - uses: actions/setup-python@v2
         with:
@@ -89,13 +91,3 @@ jobs:
           git commit -m 'Initial commit' && \
           git push origin temp-branch:main -f
 
-      - name: Remove secret REPO_SETUP_TOKEN
-        # After re-initializing the repository, we can remove the `REPO_SETUP_TOKEN` secret.
-        shell: bash
-        if: ${{ env.REPO_SETUP_TOKEN }}
-        run: |
-          curl \
-            -X DELETE --fail \
-            -H "Accept: application/vnd.github.v3+json" \
-            -H "Authorization: token ${{ env.REPO_SETUP_TOKEN }}" \
-            https://api.github.com/repos/$GITHUB_REPOSITORY/actions/secrets/REPO_SETUP_TOKEN
