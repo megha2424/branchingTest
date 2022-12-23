@@ -24,28 +24,6 @@ jobs:
       - name: Build
         run: dotnet build ${{ env.SOLUTION_FILE }}  --configuration Release --no-restore
 
-      - name: Test
-        working-directory: ./tools/codeCoverage
-        run: |
-          chmod +x ./run-tests-with-coverage-ci.sh
-          ./run-tests-with-coverage-ci.sh
-        shell: bash
-
-      - name: Run Code Coverage
-        uses: danielpalme/ReportGenerator-GitHub-Action@5.1.12
-        with:
-          reports: './tmp/coverage/test-results/*/coverage.opencover.xml'
-          targetdir: './tmp/coverage/reports'
-          reporttypes: 'HtmlInline;Cobertura;Badges;Latex;'
-          verbosity: 'Info'
-          tag: '${{ github.run_number }}_${{ github.run_id }}'
-
-      - name: Archive Code Coverage Report
-        uses: actions/upload-artifact@v3
-        with:
-          name: code-coverage-report
-          path: ./tmp/coverage/reports
-
       - name: trufflehog-actions-scan
         uses: edplato/trufflehog-actions-scan@master
         with:
