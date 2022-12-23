@@ -1,22 +1,84 @@
-name: GitHub Actions Demo
-run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
-on: [push]
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'main'
+
+env:
+  SOLUTION_FILE: './[[project_working_directory]]PluginBase.sln'
+
 jobs:
-  build:
-    runs-on: ubuntu-latest  
-    strategy:
-      matrix:
-        dotnet-version: [ '6.0']
-    defaults:
-      run:
-        working-directory: [[project_working_directory]]PluginBase
+  build-and-test:
+
+    runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v3
-      - name: Setup .NET Core SDK ${{ matrix.dotnet-version }}
-        uses: actions/setup-dotnet@v3
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v2
         with:
-          dotnet-version: ${{ matrix.dotnet-version }}
+          dotnet-version: 6.0.x
       - name: Install dependencies
-        run: dotnet restore 
+        run: dotnet restore ${{ env.SOLUTION_FILE }}
+
       - name: Build
-        run: dotnet build --configuration Release --no-restore
+        run: dotnet build ${{ env.SOLUTION_FILE }}  --configuration Release --no-restore
+
+      - name: Test
+        working-directory: ./tools/codeCoverage
+        run: |
+          chmod +x ./run-tests-with-coverage-ci.sh
+          ./run-tests-with-coverage-ci.sh
+        shell: bash
+
+      - name: Run Code Coverage
+        uses: danielpalme/ReportGenerator-GitHub-Action@5.1.12
+        with:
+          reports: './tmp/coverage/test-results/*/coverage.opencover.xml'
+          targetdir: './tmp/coverage/reports'
+          reporttypes: 'HtmlInline;Cobertura;Badges;Latex;'
+          verbosity: 'Info'
+          tag: '${{ github.run_number }}_${{ github.run_id }}'
+
+      - name: Archive Code Coverage Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: code-coverage-report
+          path: ./tmp/coverage/reports
+
+      - name: trufflehog-actions-scan
+        uses: edplato/trufflehog-actions-scan@master
+        with:
+          scanArguments: "--regex --entropy=False --max_depth=5 --exclude_paths tools/trufflehog/trufflehog_exclude_patterns.txt"
+
+      - name: Run Dependency Check
+        uses: dependency-check/Dependency-Check_Action@main
+        id: Depcheck
+        with:
+          project: 'test'
+          path: '.'
+          format: 'HTML'
+
+      - name: Archive Dependency Check Report
+        uses: actions/upload-artifact@master
+        with:
+          name: Depcheck report
+          path: ${{github.workspace}}/reports
+
+      - name: Push to Nuget
+        run: |
+          npm install -g json
+          version=$(curl -u space-administrator:${{ secrets.NUGET_SECRET_GITHUB }} -H 'Accept:application/json' https://nuget.pkg.github.com/SpaceBank/query?q=[[Namespace]].[[ProjectName]]PluginBase | json -a data | json -a version | cut -d " " -f 1)
+          major="$(echo $version | cut -d "." -f 1)"
+          if [ -z $major ]; then major=1
+          fi
+          minor="$(echo $version | cut -d "." -f 2)"
+          if [ -z $minor ]; then minor=0
+          fi
+          patch="$(echo $version | cut -d "." -f 3)"
+          if [ -z $patch ]; then patch=-1
+          fi
+          newVersion="$major.$minor.$((patch + 1))"
+          dotnet pack -p:PackageVersion=$newVersion [[Namespace]].[[ProjectName]]PluginBase --no-restore --configuration Release
+          dotnet nuget push [[Namespace]].[[ProjectName]]PluginBase/bin/Release/*.nupkg --source https://nuget.pkg.github.com/SpaceBank/index.json --api-key ${{ secrets.NUGET_SECRET_GITHUB }} --skip-duplicate
+        shell: bash

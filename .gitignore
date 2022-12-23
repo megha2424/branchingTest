@@ -352,3 +352,9 @@ MigrationBackup/
 __MACOSX/
 /.idea
 .idea
+
+# intelij idea
+*.idea/*
+
+# tmp files
+tmp/*
