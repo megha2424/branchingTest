@@ -22,7 +22,7 @@ with open(r'../../.github/workflows/build.yml', 'w') as file:
 
 print("Text replaced")
 
-packageName_searchTest = "[[packageName]]]"
+packageName_searchTest = "[[packageName]]"
 packageName_replace_text = "{{cookiecutter.Namespace}}.{{cookiecutter.ProjectName}}PluginBase" 
 with open(r'../../.github/workflows/release.yml', 'r') as file:
 
